@@ -1,6 +1,7 @@
 var button = document.querySelector('#validate');
 var scores = document.querySelector('#scores');
-var timerHtml = document.querySelector('#timer');
+var timer_minute = document.querySelector('#timer_minute');
+var timer_second = document.querySelector('#timer_second');
 var randMole; //case aléatoire pour la taupe
 var nbSquare; //nb case
 var mole; //taupe
@@ -12,17 +13,25 @@ var gameStatus; //active eventListener dès que la partie ce lance
 var timerStart ; //sert a r suppr
 var globalTimer;
 var globalTimerInterval;
-timerHtml.innerHTML = "02:00"
+timer_minute.innerHTML = "1";
+timer_second.innerHTML= "20";
 
 button.addEventListener("click", function () { 
     point= 0;
     timerStart = new Date().getTime();
-
     clearInterval(imageTimerInterval);
     globalTimerInterval = setInterval(function (){
-        globalTimer= new Date().getTime() - timerStart
-        //console.log(globalTimer);
-        timerHtml.innerHTML = globalTimer;
+        if (timer_second.innerHTML == 0 && timer_minute.innerHTML != 0) {
+            timer_minute.innerHTML -= 1;
+            timer_second.innerHTML = 60;
+        }else if (timer_second.innerHTML == 0 && timer_minute.innerHTML == 0){
+            clearInterval(globalTimerInterval);
+            clearInterval(imageTimerInterval);
+            gameStatus = 'stop';
+            document.querySelector('#endMessage').innerHTML = "Fin de la partie";
+            return;
+        }
+        timer_second.innerHTML -= 1;
     },1000);
 
 
